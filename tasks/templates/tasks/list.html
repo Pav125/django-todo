@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center">TODO</h1>
+    <form method="POST" action="/" class="text-center">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="text" class="form-control" name="title" placeholder="Enter task title" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Task</button>
+    </form>
+
+    <h3 class="mt-5 text-center">Incomplete Tasks</h3>
+    <div class="list-group">
+        {% for task in tasks %}
+            {% if not task.complete %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ task.title }}
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'update_task' task.id %}" class="btn btn-info">Update</a>
+                        <a href="{% url 'delete' task.id %}" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <h3 class="mt-5 text-center">Completed Tasks</h3>
+    <div class="list-group">
+        {% for task in tasks %}
+            {% if task.complete %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <del>{{ task.title }}</del>
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'update_task' task.id %}" class="btn btn-info">Update</a>
+                        <a href="{% url 'delete' task.id %}" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Bootstrap JS (optional) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
